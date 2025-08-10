@@ -12,48 +12,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Issues from JSON
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+      - name: Create issues from JSON
         run: |
           python3 - <<'PY'
 import os, json, sys, urllib.request, urllib.error
 
-repo = f"{os.environ['OWNER']}/{os.environ['REPO']}"
-token = os.environ['GITHUB_TOKEN']
+# GitHub sets GITHUB_REPOSITORY (owner/repo) and GITHUB_TOKEN automatically
+repo = os.environ.get('GITHUB_REPOSITORY')
+if not repo:
+    print("GITHUB_REPOSITORY not set", file=sys.stderr)
+    sys.exit(1)
 
-with open('issues/issues.json', 'r', encoding='utf-8') as f:
+token = os.environ.get('GITHUB_TOKEN')
+if not token:
+    print("GITHUB_TOKEN not set", file=sys.stderr)
+    sys.exit(1)
+
+issues_path = 'issues/issues.json'
+if not os.path.exists(issues_path):
+    print(f"Missing file: {issues_path}", file=sys.stderr)
+    sys.exit(1)
+
+with open(issues_path, 'r', encoding='utf-8') as f:
     issues = json.load(f)
 
 api_base = "https://api.github.com/repos"
 created = 0
 
-for issue in issues:
-    data = json.dumps({
-        "title": issue.get("title"),
-        "body": issue.get("body")
-    }).encode('utf-8')
-
-    req = urllib.request.Request(
-        f"{api_base}/{repo}/issues",
-        data=data,
-        method='POST'
-    )
+for item in issues:
+    title = item.get('title')
+    body = item.get('body', '')
+    payload = json.dumps({'title': title, 'body': body}).encode('utf-8')
+    req = urllib.request.Request(f"{api_base}/{repo}/issues", data=payload, method='POST')
     req.add_header("Authorization", f"Bearer {token}")
     req.add_header("Accept", "application/vnd.github+json")
     req.add_header("Content-Type", "application/json")
-
     try:
         urllib.request.urlopen(req)
         created += 1
-        print(f"✅ Created: {issue.get('title')}")
+        print(f"Created: {title}")
     except urllib.error.HTTPError as e:
-        print(f"❌ Failed to create: {issue.get('title')} - Status: {e.code}", file=sys.stderr)
+        print(f"Failed to create: {title} - HTTP {e.code}", file=sys.stderr)
 
 print(f"Total issues created: {created}")
 PY
