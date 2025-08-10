@@ -1,0 +1,43 @@
+name: Create Roadmap Issues
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create issues from JSON
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name || github.repository }}
+        run: |
+          python3 - <<'PY'
+import os, json, sys, urllib.request, urllib.error
+repo = os.environ['GITHUB_REPOSITORY'] if 'GITHUB_REPOSITORY' in os.environ else f"{os.environ['OWNER']}/{os.environ['REPO']}"
+token = os.environ['GITHUB_TOKEN']
+with open('issues/issues.json', 'r', encoding='utf-8') as f:
+    issues = json.load(f)
+api_base = "https://api.github.com/repos"
+created = 0
+for it in issues:
+    data = json.dumps({"title": it.get("title"), "body": it.get("body")}).encode('utf-8')
+    req = urllib.request.Request(f"{api_base}/{repo}/issues", data=data, method='POST')
+    req.add_header("Authorization", f"Bearer {token}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("Content-Type", "application/json")
+    try:
+        resp = urllib.request.urlopen(req)
+        created += 1
+        print("Created:", it.get("title"))
+    except urllib.error.HTTPError as e:
+        print("Failed to create:", it.get("title"), "status:", e.code, file=sys.stderr)
+print(f"Total created: {created}")
+PY

@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Networking & Services Deep Dive",
+    "body": "## Description\nDeep dive into Kubernetes networking: CNI, Service types, Ingress, Gateway API, eBPF.\n\n## Resources\n- https://kubernetes.io/docs/concepts/cluster-administration/networking/\n- Cilium/Calico docs\n- Kubernetes the Hard Way (networking sections)\n\n## Checklist\n- [ ] Read networking docs\n- [ ] Deploy CNI (Calico/Cilium)\n- [ ] Deploy a mesh (Istio/Linkerd)\n- [ ] Deploy multi-namespace microservices\n\n## Deliverable\nAdd configs and notes to /notes/card01-networking.md"
+  },
+  {
+    "title": "Security Best Practices",
+    "body": "## Description\nImplement RBAC, NetworkPolicies, secret encryption, Pod security standards and TLS termination.\n\n## Resources\n- https://kubernetes.io/docs/concepts/security/\n- Falco, Trivy\n\n## Checklist\n- [ ] Implement RBAC least-privilege\n- [ ] Create NetworkPolicies for namespaces\n- [ ] Encrypt Secrets (KMS/Provider)\n- [ ] Document in /notes/card02-security.md\n\n## Deliverable\nSecurity policy manifests + README"
+  },
+  {
+    "title": "Observability & Troubleshooting",
+    "body": "## Description\nDeploy Prometheus/Grafana/Loki/Tempo and build dashboards; practice troubleshooting.\n\n## Resources\n- Prometheus/Grafana docs\n- Loki + Tempo docs\n\n## Checklist\n- [ ] Deploy monitoring stack\n- [ ] Create dashboards for pods/nodes\n- [ ] Simulate failures & document troubleshooting steps\n\n## Deliverable\nDashboards + playbook in /notes/card03-observability.md"
+  },
+  {
+    "title": "CKA/CKAD/CKS Exam Fast Track",
+    "body": "## Description\nExam-focused labs, killer.sh practice, and a cheatsheet.\n\n## Resources\n- killer.sh\n- Official curriculum pages\n\n## Checklist\n- [ ] Setup exam aliases and YAML skeletons\n- [ ] Do 2 runs on killer.sh\n- [ ] Create ~/exam-cheatsheet.md\n\n## Deliverable\nCheatsheet & practice log"
+  },
+  {
+    "title": "FinOps & Cost Optimization",
+    "body": "## Description\nSet up Kubecost/Azure cost monitoring and optimize requests/limits.\n\n## Resources\n- Kubecost docs\n- Azure Cost Management\n\n## Checklist\n- [ ] Install Kubecost\n- [ ] Identify cost hotspots\n- [ ] Optimize resource requests/limits\n\n## Deliverable\nCost-optimization report"
+  },
+  {
+    "title": "SecOps (CI/CD Scanning + Runtime)",
+    "body": "## Description\nIntegrate Trivy/Snyk in CI and Falco for runtime detection.\n\n## Checklist\n- [ ] Add Trivy to CI pipeline\n- [ ] Configure Falco rules\n- [ ] Document pipeline steps\n\n## Deliverable\nCI pipeline YAML + rules"
+  },
+  {
+    "title": "AIOps (Anomaly Detection)",
+    "body": "## Description\nExport Prometheus metrics and build a lightweight anomaly detector (notebook).\n\n## Checklist\n- [ ] Export metrics to CSV\n- [ ] Build model (PyCaret/Lightweight)\n- [ ] Create a notebook demonstrating anomaly detection\n\n## Deliverable\nNotebook + scripts"
+  },
+  {
+    "title": "MLOps: Deploy sample model to AKS",
+    "body": "## Description\nUse MLflow to track experiments and deploy a model to AKS.\n\n## Checklist\n- [ ] Setup MLflow tracking\n- [ ] Containerize model\n- [ ] Deploy to AKS & expose via Ingress\n\n## Deliverable\nModel repo + deployment manifests"
+  },
+  {
+    "title": "Generative AI for DevOps (LangChain + Bot)",
+    "body": "## Description\nBuild a FastAPI microservice using LangChain + OpenAI for log summarization & alert triage.\n\n## Checklist\n- [ ] Scaffold FastAPI app\n- [ ] Add LangChain pipeline for summarization\n- [ ] Containerize & deploy to K8s\n\n## Deliverable\nAI bot repo + README"
+  },
+  {
+    "title": "Portfolio & README polishing",
+    "body": "## Description\nCreate clean READMEs, case studies and link deliverable repos in root deliverables/README.md.\n\n## Checklist\n- [ ] Create README templates\n- [ ] Add screenshots and demos\n- [ ] Pin repos in GitHub profile\n\n## Deliverable\ndeliverables/README.md with links"
+  }
+]
